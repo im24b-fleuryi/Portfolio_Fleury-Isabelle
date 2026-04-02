@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projects</title>
+    <title>Projects - Pixel Game</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -16,117 +17,180 @@
             <a class="nav-links" href="#">My CV</a>
         </div>
     </nav>
+
     <main>
-        <h1>Meine Projekte</h1>
+        <h1 class="pixel-title">My Projects</h1>
+        <p class="game-instructions">Use A and D to move, SPACEBAR to jump and collect projects!</p>
 
-        <section class="card-grid" aria-label="Projekte Übersicht">
-            <article class="card" data-title="Pfadifinder Webseite"
-                data-description="Erstellung einer offiziellen Webseite der Pfadfinder"
-                data-details="Ich habe die alte Webseite, die mit Wordpress erstellt wurde, neu erstellt Mithilfe von HTML und CSS, dabei besteht das CSS von Bootstrap"
-                data-image="/img/PfadiVennesLogo2.png" data-link="https://websitevennes.netlify.app/">
-                <img class="project-preview" src="/img/PfadiVennesLogo2.png" alt="Pfadifinder Projektbild" />
-                <h3>Pfadifinder Webseite</h3>
-                <p>Neues Design für Vereinswebsite, mobile optimiert.</p>
-            </article>
+        <div class="game-container" id="gameContainer">
+            <!-- Sky background -->
+            <div class="game-sky"></div>
 
-            <article class="card" data-title="Project title"
-                data-description="Ein persönliches Portfolio mit Verwaltungsbereich"
-                data-details="Dieses Projekt zeigt ein Portfolio mit dynamischer Inhalte-Verwaltung. Enthält Projekt- und Blog-Module sowie ein Dark-Mode-Feature."
-                data-image="/img/filler.png" data-link="https://example.com/portfolio-cms">
-                <img class="project-preview" src="/img/filler.png" alt="template-picture-name" />
-                <h3>project title</h3>
-                <p>description</p>
-            </article>
-            <!---
-            <article class="card" data-title="Project title"
-                data-description="Ein persönliches Portfolio mit Verwaltungsbereich"
-                data-details="Dieses Projekt zeigt ein Portfolio mit dynamischer Inhalte-Verwaltung. Enthält Projekt- und Blog-Module sowie ein Dark-Mode-Feature."
-                data-image="/img/filler.png" data-link="https://example.com/portfolio-cms">
-                <img class="project-preview" src="/img/filler.png" alt="template-picture-name" />
-                <h3>project title</h3>
-                <p>description</p>
-            </article>
--->
-        </section>
-        <div class="modal-overlay" id="modalOverlay" aria-hidden="true">
-            <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"
-                aria-describedby="modalDescription">
-                <button class="modal-close" id="modalClose" aria-label="Schließen">✕</button>
-                <img id="modalImage" src="" alt="Projektbild" class="modal-image" />
-                <h2 id="modalTitle">Titel</h2>
-                <p id="modalDescription">Beschreibung</p>
-                <p id="modalDetails" class="modal-details"></p>
-                <a id="modalActionBtn" class="modal-action-button" href="#" target="_blank"
-                    rel="noopener noreferrer">Zum Projekt</a>
+            <!-- Ground -->
+            <div class="game-ground"></div>
+
+            <!-- Player -->
+            <div class="player" id="player"></div>
+
+            <!-- Project Blocks -->
+            <div class="project-block" data-project="0" style="left: 150px; top: 200px;">
+                <img class="block-image" src="/img/PfadiVennesLogo2.png" alt="Project 1" />
+            </div>
+            <div class="project-block" data-project="1" style="left: 450px; top: 180px;">
+                <img class="block-image" src="/img/filler.png" alt="Project 2" />
+            </div>
+            <div class="project-block" data-project="2" style="left: 750px; top: 200px;">
+                <img class="block-image" src="/img/filler.png" alt="Project 3" />
             </div>
         </div>
+
+        <!-- Pixelart Modal -->
+        <div class="pixel-modal-overlay" id="pixelModalOverlay">
+            <div class="pixel-modal" id="pixelModal">
+                <div class="pixel-modal-header">
+                    <h2 id="pixelModalTitle">Project</h2>
+                    <button class="pixel-modal-close" id="pixelModalClose">X</button>
+                </div>
+                <div class="pixel-modal-content">
+                    <img id="pixelModalImage" src="" alt="Project" class="pixel-modal-image" />
+                    <p id="pixelModalDescription" class="pixel-text"></p>
+                    <p id="pixelModalDetails" class="pixel-text"></p>
+                    <a id="pixelModalLink" href="#" target="_blank" class="pixel-button">Visit</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hidden data container with project info -->
+        <div id="projectData" style="display: none;">
+            <div data-index="0" data-title="Scouts" data-description="Scouts Website"
+                data-details="HTML und CSS mit Bootstrap. Modern responsive Website for the scouts I'm part of."
+                data-image="/img/PfadiVennesLogo2.png" data-link="https://websitevennes.netlify.app/"></div>
+            <div data-index="1" data-title="Project 2" data-description="Portfolio CMS"
+                data-details="Dynamische Webseite mit Verwaltungsbereich. Projekt- und Blog-Module mit Dark-Mode."
+                data-image="/img/filler.png" data-link="https://example.com/"></div>
+            <div data-index="2" data-title="Project 3" data-description="Web Application"
+                data-details="Interaktive Webanwendung mit modernem Design. Responsive Layout für alle Geräte."
+                data-image="/img/filler.png" data-link="https://example.com/"></div>
+        </div>
     </main>
-    <script>
-        const cards = document.querySelectorAll('.card');
-        const overlay = document.getElementById('modalOverlay');
-        const modalTitle = document.getElementById('modalTitle');
-        const modalDescription = document.getElementById('modalDescription');
-        const modalDetails = document.getElementById('modalDetails');
-        const modalImage = document.getElementById('modalImage');
-        const modalActionBtn = document.getElementById('modalActionBtn');
-        const closeBtn = document.getElementById('modalClose');
-
-        function openModal(card) {
-            const title = card.dataset.title || 'Projekt';
-            const description = card.dataset.description || '';
-            const details = card.dataset.details || '';
-            const image = card.dataset.image || '';
-
-            modalTitle.textContent = title;
-            modalDescription.textContent = description;
-            modalDetails.textContent = details;
-
-            if (image) {
-                modalImage.src = image;
-                modalImage.style.display = 'block';
-                modalImage.alt = `${title} Bild`;
-            } else {
-                modalImage.src = '';
-                modalImage.style.display = 'none';
-            }
-
-            const link = card.dataset.link || '#';
-            if (link && link !== '#') {
-                modalActionBtn.href = link;
-                modalActionBtn.style.display = 'inline-block';
-            } else {
-                modalActionBtn.href = '#';
-                modalActionBtn.style.display = 'none';
-            }
-
-            overlay.classList.add('active');
-            overlay.setAttribute('aria-hidden', 'false');
-        }
-
-        function closeModal() {
-            overlay.classList.remove('active');
-            overlay.setAttribute('aria-hidden', 'true');
-        }
-
-        cards.forEach(card => {
-            card.addEventListener('click', () => openModal(card));
-        });
-
-        closeBtn.addEventListener('click', closeModal);
-        overlay.addEventListener('click', event => {
-            if (event.target === overlay) closeModal();
-        });
-
-        document.addEventListener('keydown', event => {
-            if (event.key === 'Escape' && overlay.classList.contains('active')) {
-                closeModal();
-            }
-        });
-    </script>
 
     <footer>
         <p>&copy; 2024 Portfolio. All rights reserved.</p>
     </footer>
+
+    <script>
+        // Game variables
+        const gameContainer = document.getElementById('gameContainer');
+        const player = document.getElementById('player');
+        const projectBlocks = document.querySelectorAll('.project-block');
+        const pixelModal = document.getElementById('pixelModalOverlay');
+        const pixelModalClose = document.getElementById('pixelModalClose');
+        const projectData = document.getElementById('projectData');
+
+        // Player physics
+        let playerX = 350;
+        let playerY = 400;
+        let playerVelocityY = 0;
+        let isJumping = false;
+        const gravity = 0.6;
+        const jumpPower = -15;
+        const groundLevel = 400;
+
+        // Input handling
+        const keys = {};
+        document.addEventListener('keydown', (e) => {
+            keys[e.key] = true;
+
+            if (e.key === ' ') {
+                e.preventDefault();
+                if (!isJumping) {
+                    playerVelocityY = jumpPower;
+                    isJumping = true;
+                }
+            }
+        });
+
+        document.addEventListener('keyup', (e) => {
+            keys[e.key] = false;
+        });
+
+        function updatePlayer() {
+            // Movement
+            if (keys['a'] || keys['A']) playerX -= 5;
+            if (keys['d'] || keys['D']) playerX += 5;
+
+            // Boundary check
+            playerX = Math.max(0, Math.min(playerX, gameContainer.clientWidth - 40));
+
+            // Gravity and jumping
+            playerVelocityY += gravity;
+            playerY += playerVelocityY;
+
+            // Ground collision
+            if (playerY >= groundLevel) {
+                playerY = groundLevel;
+                playerVelocityY = 0;
+                isJumping = false;
+            }
+
+            // Update player position
+            player.style.left = playerX + 'px';
+            player.style.top = playerY + 'px';
+
+            // Check collisions with project blocks
+            checkCollisions();
+        }
+
+        function checkCollisions() {
+            projectBlocks.forEach((block) => {
+                const blockRect = block.getBoundingClientRect();
+                const playerRect = player.getBoundingClientRect();
+
+                if (!(playerRect.right < blockRect.left ||
+                    playerRect.left > blockRect.right ||
+                    playerRect.bottom < blockRect.top ||
+                    playerRect.top > blockRect.bottom)) {
+                    openPixelModal(block.dataset.project);
+                }
+            });
+        }
+
+        function openPixelModal(projectIndex) {
+            const data = projectData.querySelector(`[data-index="${projectIndex}"]`);
+            if (!data) return;
+
+            document.getElementById('pixelModalTitle').textContent = data.dataset.title;
+            document.getElementById('pixelModalDescription').textContent = data.dataset.description;
+            document.getElementById('pixelModalDetails').textContent = data.dataset.details;
+            document.getElementById('pixelModalImage').src = data.dataset.image;
+            document.getElementById('pixelModalLink').href = data.dataset.link;
+
+            pixelModal.classList.add('active');
+        }
+
+        function closePixelModal() {
+            pixelModal.classList.remove('active');
+        }
+
+        pixelModalClose.addEventListener('click', closePixelModal);
+        pixelModal.addEventListener('click', (e) => {
+            if (e.target === pixelModal) closePixelModal();
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && pixelModal.classList.contains('active')) {
+                closePixelModal();
+            }
+        });
+
+        // Game loop
+        function gameLoop() {
+            updatePlayer();
+            requestAnimationFrame(gameLoop);
+        }
+
+        gameLoop();
+    </script>
 </body>
 
 </html>
