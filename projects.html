@@ -24,7 +24,9 @@
 
         <div class="game-container" id="gameContainer">
             <!-- Sky background -->
-            <div class="game-sky"></div>
+            <div class="game-sky">
+                <img src="./img/game-background.png">
+            </div>
 
             <!-- Ground -->
             <div class="game-ground"></div>
@@ -37,7 +39,7 @@
                 <img class="block-image" src="/img/PfadiVennesLogo2.png" alt="Project 1" />
             </div>
             <div class="project-block" data-project="1" style="left: 450px; top: 180px;">
-                <img class="block-image" src="/img/filler.png" alt="Project 2" />
+                <img class="block-image" src="/img/filler.png" alt="BookMatch" />
             </div>
             <div class="project-block" data-project="2" style="left: 750px; top: 200px;">
                 <img class="block-image" src="/img/filler.png" alt="Project 3" />
@@ -64,10 +66,13 @@
         <div id="projectData" style="display: none;">
             <div data-index="0" data-title="Scouts" data-description="Scouts Website"
                 data-details="HTML und CSS with Bootstrap. Modern responsive Website for the scouts I'm part of."
-                data-image="/img/PfadiVennesLogo2.png" data-link="https://websitevennes.netlify.app/"></div>
-            <div data-index="1" data-title="App for Booklovers" data-description="App"
-                data-details="Currently working on it, to create a app for booklovers, more details aren't"
-                data-image="/img/filler.png" data-link="https://example.com/"></div>
+                data-image="/img/PfadiVennesLogo2.png" data-link="https://vennes.pfadi.ch/">
+            </div>
+
+            <div data-index="1" data-title="App for Booklovers" data-description="BookMatch"
+                data-details="Currently working on it, to create a app for booklovers, currently making it a website to already have something"
+                data-image="/img/filler.png" data-link="https://example.com/">
+            </div>
         </div>
     </main>
 
@@ -86,12 +91,12 @@
 
         // Player physics
         let playerX = 350;
-        let playerY = 400;
+        let playerY = 390;
         let playerVelocityY = 0;
         let isJumping = false;
         const gravity = 0.6;
         const jumpPower = -15;
-        const groundLevel = 400;
+        const groundLevel = 390;
 
         // Input handling
         const keys = {};
@@ -117,7 +122,7 @@
             if (keys['d'] || keys['D']) playerX += 5;
 
             // Boundary check
-            playerX = Math.max(0, Math.min(playerX, gameContainer.clientWidth - 40));
+            playerX = Math.max(0, Math.min(playerX, gameContainer.clientWidth - 70));
 
             // Gravity and jumping
             playerVelocityY += gravity;
