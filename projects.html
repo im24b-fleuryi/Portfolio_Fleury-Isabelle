@@ -35,13 +35,13 @@
             <div class="player" id="player"></div>
 
             <!-- Project Blocks -->
-            <div class="project-block" data-project="0" style="left: 150px; top: 200px;">
+            <div class="project-block" data-project="0" data-left="150" data-top="200">
                 <img class="block-image" src="/img/PfadiVennesLogo2.png" alt="Project 1" />
             </div>
-            <div class="project-block" data-project="1" style="left: 450px; top: 180px;">
+            <div class="project-block" data-project="1" data-left="450" data-top="180">
                 <img class="block-image" src="/img/filler.png" alt="BookMatch" />
             </div>
-            <div class="project-block" data-project="2" style="left: 750px; top: 200px;">
+            <div class="project-block" data-project="2" data-left="750" data-top="200">
                 <img class="block-image" src="/img/filler.png" alt="Project 3" />
             </div>
         </div>
@@ -89,14 +89,50 @@
         const pixelModalClose = document.getElementById('pixelModalClose');
         const projectData = document.getElementById('projectData');
 
-        // Player physics
+        const groundHeight = 140;
         let playerX = 350;
         let playerY = 390;
         let playerVelocityY = 0;
         let isJumping = false;
         const gravity = 0.6;
         const jumpPower = -15;
-        const groundLevel = 390;
+        let groundLevel = 390;
+
+        function updateGameLayout() {
+            const containerWidth = gameContainer.clientWidth;
+            const containerHeight = gameContainer.clientHeight;
+            const playerWidth = player.offsetWidth;
+            const playerHeight = player.offsetHeight;
+            const scale = Math.min(containerWidth / 900, 1);
+
+            projectBlocks.forEach((block) => {
+                const left = parseFloat(block.dataset.left) * scale;
+                const top = parseFloat(block.dataset.top) * scale;
+                block.style.left = left + 'px';
+                block.style.top = top + 'px';
+            });
+
+            groundLevel = containerHeight - groundHeight - playerHeight;
+            if (playerY > groundLevel) {
+                playerY = groundLevel;
+            }
+
+            playerX = Math.max(0, Math.min(playerX, containerWidth - playerWidth));
+            player.style.left = playerX + 'px';
+            player.style.top = playerY + 'px';
+        }
+
+        projectBlocks.forEach((block) => {
+            block.addEventListener('click', () => openPixelModal(block.dataset.project));
+            block.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                openPixelModal(block.dataset.project);
+            }, { passive: false });
+        });
+
+        window.addEventListener('resize', updateGameLayout);
+
+        window.addEventListener('orientationchange', updateGameLayout);
 
         // Input handling
         const keys = {};
@@ -191,6 +227,7 @@
             requestAnimationFrame(gameLoop);
         }
 
+        updateGameLayout();
         gameLoop();
     </script>
 

@@ -519,6 +519,46 @@ nav a .navbar {
     border: 2px solid #333;
 }
 
+/* Mobile responsive game layout */
+@media (max-width: 700px) {
+    .game-container {
+        height: min(520px, 70vh);
+    }
+
+    .game-instructions {
+        font-size: 0.75rem;
+        padding: 0 0.5rem;
+    }
+
+    .player {
+        width: 60px;
+        height: 60px;
+    }
+
+    .project-block {
+        width: 75px;
+        height: 75px;
+    }
+
+    .project-block:hover {
+        transform: none;
+    }
+}
+
+@media (max-width: 500px) {
+    .game-container {
+        height: min(460px, 65vh);
+    }
+
+    .pixel-title {
+        font-size: 1.2rem;
+    }
+
+    .game-instructions {
+        font-size: 0.7rem;
+    }
+}
+
 /* Pixelart Modal */
 .pixel-modal-overlay {
     position: fixed;
