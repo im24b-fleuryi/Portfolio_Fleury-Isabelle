@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 
-<body>
+<body class="body-cv">
     <nav class="navbar">
         <div class="container">
             <a class="nav-links" href="index.html">Home</a>
@@ -20,14 +20,137 @@
         </div>
     </nav>
 
-    <main>
-        <iframe src="./img/I.F_Lebenslauf.pdf" width="100%" height="800px"
-            style="border: none; margin: auto; display: block;">
-            <p>Your browser doesn't support iframes.
-                <a href="./img/I.F_Lebenslauf.pdf">Download my CV</a>
-            </p>
-        </iframe>
+    <main class="cv-template">
+        <section class="profile-card">
+            <h1>Isabelle Fleury</h1>
+            <p class="tagline">Creative thinker • Friendly • Always curious</p>
+            <div class="contact-info">
+                <p>Email: isabelle@telefleuries.com</p>
+                <p>Location: Zurich, Switzerland CH</p>
+            </div>
+        </section>
+        <section class="cv-grid">
+            <article class="cv-section">
+                <h2>Education</h2>
+                <div class="item">
+                    <h3>Primary school</h3>
+                    <p class="meta">2013 to 2019</p>
+                </div>
+                <div class="item">
+                    <h3>Secondary school </h3>
+                    <p class="meta">1st and 2nd year - 2019 to 2021</p>
+                </div>
+                <div class="item">
+                    <h3>Gymnasium</h3>
+                    <p class="meta">trial semester - 2021 to 2021</p>
+                </div>
+                <div class="item">
+                    <h3>secondary school</h3>
+                    <p class="meta">3rd year - 2022 to 2022</p>
+                </div>
+                <div class="item">
+                    <h3>Gymnasium</h3>
+                    <p class="meta"> Trial semester - 2022 to 2023</p>
+                </div>
+                <div class="item">
+                    <h3>IT-School (IMS)</h3>
+                    <p class="meta"> Started 2024, still in school</p>
+                </div>
+            </article>
+
+            <article class="cv-section">
+                <h2>Work Experiences</h2>
+                <div class="item">
+                    <h3>Migros</h3>
+                    <p class="meta">Hour worker in Migros supermarket <br> 05/2023 - 07/2023</p>
+                </div>
+                <div class="item">
+                    <h3>Childrens Daycare</h3>
+                    <p class="meta">Güxi, Internship <br> 04/2024 - 07/2024</p>
+                </div>
+                <div class="item">
+                    <h3>Child supervision</h3>
+                    <p class="meta">Tekmania, Holiday Minijob <br>04/2025 - 07/2025</p>
+                </div>
+            </article>
+            <article class="cv-section">
+                <h2>Hobbies</h2>
+                <p>
+                    I love to sing, spend a lot of time with reading, I am working on projects of my own or I spend time
+                    playing
+                    computer games. Additionally I am an active Member of scouts, watching kids for an afternoon in the
+                    age
+                    of 4 to 6 years.
+                </p>
+            </article>
+            <article class="cv-section timeline-section">
+                <h2>Timeline</h2>
+                <p class="tagline">Hover over the bars to see School or Work details</p>
+                <button class="timeline-school-button">School</button>
+                <button class="timeline-work-button">Work</button>
+                <div class="timeline" id="timeline">
+                    <div class="timeline-line"></div>
+                    <div class="timeline-markers" id="timelineMarkers"></div>
+                    <div class="timeline-items" id="timelineItems"></div>
+                </div>
+            </article>
+        </section>
     </main>
+    <script>
+        (function () {
+            const startYear = 2013;
+            const currentYear = new Date().getFullYear();
+            const totalYears = currentYear - startYear + 1;
+            const markers = document.getElementById('timelineMarkers');
+            const itemsContainer = document.getElementById('timelineItems');
+
+            function createMarkers() {
+                for (let year = startYear; year <= currentYear; year++) {
+                    const marker = document.createElement('div');
+                    marker.className = 'timeline-marker';
+                    marker.innerHTML = `<span>${year}</span>`;
+                    markers.appendChild(marker);
+                }
+            }
+
+            function addItem(title, start, end, type) {
+                if (!title || isNaN(start) || isNaN(end) || start < startYear || end < startYear || start > currentYear || end > currentYear || end < start) {
+                    return;
+                }
+                const left = ((start - startYear) / (totalYears - 1)) * 100;
+                let width = ((end - start + 1) / totalYears) * 100;
+                if (left + width > 100) {
+                    width = 100 - left;
+                }
+                const item = document.createElement('div');
+                item.className = `timeline-item ${type}`;
+                item.dataset.title = `${type === 'work' ? 'Work' : 'School'}: ${title}`;
+                item.style.left = `${left}%`;
+                item.style.width = `${width}%`;
+                item.setAttribute('aria-label', `${type === 'work' ? 'Work' : 'School'}: ${title}`);
+                item.title = `${type === 'work' ? 'Work' : 'School'}: ${title}`;
+                itemsContainer.appendChild(item);
+            }
+
+            createMarkers();
+
+            const defaultEvents = [
+                { title: 'primary school', start: 2013, end: 2019, type: 'school' },
+                { title: 'secondary school 1+2 year', start: 2020, end: 2020, type: 'school' },
+                { title: 'Gymnasium Trial Semester', start: 2021, end: 2021, type: 'school' },
+                { title: 'secondary school 3 year', start: 2022, end: 2022, type: 'school' },
+                { title: 'Gymnasium Trial Semester', start: 2023, end: 2023, type: 'school' },
+                { title: 'Gymnasium Trial Semester', start: 2024, end: currentYear, type: 'school' },
+                { title: 'Migros', start: 2023, end: 2023, type: 'work' },
+                { title: 'Güxi internship', start: 2024, end: 2024, type: 'work' },
+                { title: 'Tekmania holiday minijob', start: 2025, end: 2025, type: 'work' }
+            ];
+            defaultEvents.forEach(event => addItem(event.title, event.start, event.end, event.type));
+        })();
+    </script>
+
+
+
 
     <footer>
         <p>&copy; 2024 Isabelle Fleury. All rights reserved.</p>
