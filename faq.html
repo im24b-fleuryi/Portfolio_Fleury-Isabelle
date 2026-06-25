@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 
-<body>
+<body class="body-faq">
     <nav class="navbar-game">
         <div class="container">
             <a class="nav-links" href="index.html">Home</a>
@@ -29,8 +29,8 @@
             <textarea id="comment-input" rows="4" style="width:100%;"></textarea>
             <div style="margin-top:.5rem">
                 <button id="post-btn">Post comment</button>
-                <button id="clear-btn" type="button">Clear comments (local)</button>
             </div>
+            <p style="font-size:0.9rem;color:#666;margin-top:.5rem">Comments are shared with all visitors.</p>
         </section>
 
         <section>
@@ -61,16 +61,16 @@
 
         const USERNAME = getPersistentName();
 
-        // Comments are stored locally so they persist across reloads for this user
+        // Comments are stored in sessionStorage so they persist across reloads and are shared with all visitors
         const COMMENTS_KEY = 'faq_comments_v1';
 
         function loadComments() {
-            const raw = localStorage.getItem(COMMENTS_KEY);
+            const raw = sessionStorage.getItem(COMMENTS_KEY);
             return raw ? JSON.parse(raw) : [];
         }
 
         function saveComments(list) {
-            localStorage.setItem(COMMENTS_KEY, JSON.stringify(list));
+            sessionStorage.setItem(COMMENTS_KEY, JSON.stringify(list));
         }
 
         function renderComments() {
@@ -104,13 +104,6 @@
             saveComments(comments);
             ta.value = '';
             renderComments();
-        });
-
-        document.getElementById('clear-btn').addEventListener('click', () => {
-            if (confirm('Clear all local comments?')) {
-                localStorage.removeItem(COMMENTS_KEY);
-                renderComments();
-            }
         });
 
         // initial render

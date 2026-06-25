@@ -768,6 +768,28 @@ nav a .navbar {
     box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.3);
 }
 
+/* FAQ Styles */
+
+.body-faq {
+    background: green;
+    color: #2c2c2c;
+    font-family: 'Arial', sans-serif;
+    background-image: url("./img/green-background.png");
+}
+
+.body-faq nav {
+    background-color: green;
+}
+
+.body-faq nav a:hover {
+    background-color: rgb(22, 187, 22);
+    padding: 0.5rem;
+}
+
+.comment-list li {
+    background: #def9d0;
+}
+
 
 /* CV Styles */
 
