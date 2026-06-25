@@ -12,8 +12,110 @@
 </head>
 
 <body>
+    <nav class="navbar-game">
+        <div class="container">
+            <a class="nav-links" href="index.html">Home</a>
+            <a class="nav-links" href="projects.html">My Projects</a>
+            <a class="nav-links" href="cv.html">My CV</a>
+            <a class="nav-links" href="faq.html">FAQ</a>
+        </div>
+    </nav>
 
+    <main class="comments-section" style="max-width:800px;margin:2rem auto;font-family:Arial,Helvetica,sans-serif">
+        <h1>FAQ & Comments</h1>
 
+        <section id="comment-form" style="margin-bottom:1rem">
+            <label for="comment-input">Leave a comment</label><br>
+            <textarea id="comment-input" rows="4" style="width:100%;"></textarea>
+            <div style="margin-top:.5rem">
+                <button id="post-btn">Post comment</button>
+                <button id="clear-btn" type="button">Clear comments (local)</button>
+            </div>
+        </section>
+
+        <section>
+            <h2>Comments</h2>
+            <ul id="comments-list" style="list-style:none;padding:0"></ul>
+        </section>
+    </main>
+
+    <script>
+        // List of sample random names
+        const NAMES = [
+            'Luna', 'Orion', 'Echo', 'Nova', 'Indigo', 'Atlas', 'Pixel', 'Quinn', 'Sage', 'Raven',
+            'Zephyr', 'Miso', 'Coco', 'Skye', 'Blaze', 'Marin', 'Ivy', 'Remy', 'Basil', 'Pip'
+        ];
+
+        // Get or create a persistent username for this browser
+        function getPersistentName() {
+            const key = 'faq_persistent_name_v1';
+            let name = localStorage.getItem(key);
+            if (!name) {
+                // create deterministic random choice using crypto for more entropy
+                const idx = Math.floor(window.crypto.getRandomValues(new Uint32Array(1))[0] / (0xffffffff + 1) * NAMES.length);
+                name = NAMES[idx] + Math.floor(Math.random() * 900 + 100); // add number to reduce collisions
+                localStorage.setItem(key, name);
+            }
+            return name;
+        }
+
+        const USERNAME = getPersistentName();
+
+        // Comments are stored locally so they persist across reloads for this user
+        const COMMENTS_KEY = 'faq_comments_v1';
+
+        function loadComments() {
+            const raw = localStorage.getItem(COMMENTS_KEY);
+            return raw ? JSON.parse(raw) : [];
+        }
+
+        function saveComments(list) {
+            localStorage.setItem(COMMENTS_KEY, JSON.stringify(list));
+        }
+
+        function renderComments() {
+            const list = loadComments();
+            const ul = document.getElementById('comments-list');
+            ul.innerHTML = '';
+            for (const c of list) {
+                const li = document.createElement('li');
+                li.style.border = '1px solid #ddd';
+                li.style.padding = '8px';
+                li.style.marginBottom = '8px';
+                const meta = document.createElement('div');
+                meta.style.fontSize = '0.9rem';
+                meta.style.color = '#333';
+                meta.textContent = c.name + ' • ' + new Date(c.t).toLocaleString();
+                const body = document.createElement('div');
+                body.style.marginTop = '6px';
+                body.textContent = c.text;
+                li.appendChild(meta);
+                li.appendChild(body);
+                ul.appendChild(li);
+            }
+        }
+
+        document.getElementById('post-btn').addEventListener('click', () => {
+            const ta = document.getElementById('comment-input');
+            const text = ta.value.trim();
+            if (!text) return;
+            const comments = loadComments();
+            comments.unshift({ name: USERNAME, text, t: Date.now() });
+            saveComments(comments);
+            ta.value = '';
+            renderComments();
+        });
+
+        document.getElementById('clear-btn').addEventListener('click', () => {
+            if (confirm('Clear all local comments?')) {
+                localStorage.removeItem(COMMENTS_KEY);
+                renderComments();
+            }
+        });
+
+        // initial render
+        renderComments();
+    </script>
 </body>
 
 </html>
