@@ -24,18 +24,19 @@
     <main class="comments-section" style="max-width:800px;margin:2rem auto;font-family:Arial,Helvetica,sans-serif">
         <h1>FAQ & Comments</h1>
 
-        <section id="comment-form" style="margin-bottom:1rem">
-            <label for="comment-input">Leave a comment</label><br>
-            <textarea id="comment-input" rows="4" style="width:100%;"></textarea>
-            <div style="margin-top:.5rem">
-                <button id="post-btn">Post comment</button>
-            </div>
-            <p style="font-size:0.9rem;color:#666;margin-top:.5rem">Comments are shared with all visitors.</p>
-        </section>
-
         <section>
             <h2>Comments</h2>
             <ul id="comments-list" style="list-style:none;padding:0"></ul>
+        </section>
+
+        <section id="comment-form" style="margin-top:2rem;margin-bottom:1rem">
+            <label for="comment-input">Leave a comment</label><br>
+            <textarea id="comment-input" rows="4" placeholder="Write your comment here..."
+                style="width:100%;resize:none;text-align:center;"></textarea>
+            <div style="margin-top:.5rem">
+                <button id="post-btn" type="button">Post comment</button>
+            </div>
+            <p style="font-size:0.9rem;color:#666;margin-top:.5rem">Comments are shared with all visitors.</p>
         </section>
     </main>
 
@@ -95,7 +96,7 @@
             }
         }
 
-        document.getElementById('post-btn').addEventListener('click', () => {
+        function postComment() {
             const ta = document.getElementById('comment-input');
             const text = ta.value.trim();
             if (!text) return;
@@ -104,6 +105,15 @@
             saveComments(comments);
             ta.value = '';
             renderComments();
+        }
+
+        document.getElementById('post-btn').addEventListener('click', postComment);
+
+        document.getElementById('comment-input').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                postComment();
+            }
         });
 
         // initial render
