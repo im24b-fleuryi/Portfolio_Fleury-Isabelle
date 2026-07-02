@@ -8,6 +8,40 @@
 
     <title>Portfolio - Isabelle Fleury</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* make navbar fixed and ensure only comments box scrolls */
+        .navbar-game {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: transparent
+        }
+
+        body {
+            margin: 0;
+            padding-top: 56px;
+            overflow: hidden
+        }
+
+        .comments-section {
+            max-width: 800px;
+            margin: 2rem auto;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        #comments-list {
+            max-height: 60vh;
+            overflow: auto;
+            padding: 0 0.25rem
+        }
+
+        /* ensure textarea and form remain visible and do not scroll with page */
+        #comment-form {
+            position: relative
+        }
+    </style>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 
@@ -21,7 +55,7 @@
         </div>
     </nav>
 
-    <main class="comments-section" style="max-width:800px;margin:2rem auto;font-family:Arial,Helvetica,sans-serif">
+    <main class="comments-section">
         <h1>FAQ & Comments</h1>
 
         <section>
@@ -62,16 +96,17 @@
 
         const USERNAME = getPersistentName();
 
-        // Comments are stored in sessionStorage so they persist across reloads and are shared with all visitors
-        const COMMENTS_KEY = 'faq_comments_v1';
+        // Comments are stored in localStorage so they persist across reloads and across tabs on same origin
+        // For universal sharing across all users, replace storage calls with server-side API/database.
+        const COMMENTS_KEY = 'faq_comments_v1_local';
 
         function loadComments() {
-            const raw = sessionStorage.getItem(COMMENTS_KEY);
+            const raw = localStorage.getItem(COMMENTS_KEY);
             return raw ? JSON.parse(raw) : [];
         }
 
         function saveComments(list) {
-            sessionStorage.setItem(COMMENTS_KEY, JSON.stringify(list));
+            localStorage.setItem(COMMENTS_KEY, JSON.stringify(list));
         }
 
         function renderComments() {
